@@ -2,6 +2,8 @@
 #include <sstream>
 #include <vector>
 
+// Solution failed. refer spiderslow.cpp for solution
+
 int main(){
     using namespace std;
     ios_base::sync_with_stdio(false);
