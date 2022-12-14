@@ -32,7 +32,6 @@ int main()
     fill(dp, dp+1000, 0);
     
     /*
-    oh man why DP 
     base case: 
     3 x 1: 1
     3 x 2: 1
