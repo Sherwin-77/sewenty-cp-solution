@@ -14,6 +14,7 @@ void debug(T const &value, std::string valueName, int index){
 }
 
 int hungarian(std::vector<std::vector<int>> arr){
+    // Return the minimum cost
     int n = arr.size();
     int m = arr[0].size();
     std::vector<int> u (n+1, 0), v (m+1, 0), p (m+1, 0), way (m+1, 0);
@@ -56,6 +57,9 @@ int hungarian(std::vector<std::vector<int>> arr){
     }
     int c = -v[0];
     return c;
+    // std::vector<int> ans(n+1);
+    // for(int i = 1; i <= m; ++i) ans[p[i]] = i;
+    // return ans;
 }
 
 int main(){
@@ -63,16 +67,4 @@ int main(){
     ios_base::sync_with_stdio(false);
     cout.tie(NULL);
     cin.tie(NULL);
-
-    int t;
-    cin >> t;
-    for(int x = 0; x < t; x++){
-        int n;
-        cin >> n;
-        vector<vector<int>> arr(n, vector<int> (n));
-        for(int i = 0; i < n; i++) for(int j = 0; j < n; j++) cin >> arr[i][j];
-        // Hungarian algorithm
-        int res = hungarian(arr);
-        cout << res << '\n';
-    }
 }
