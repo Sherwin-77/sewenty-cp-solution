@@ -1,8 +1,9 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include <stack>
 
-// Solution failed. refer spiderslow.cpp for solution
+// From "MPC Bootcamp/Bootcamp II/spiderslow.cpp"
 
 int main(){
     using namespace std;
@@ -11,7 +12,6 @@ int main(){
     cout.tie(NULL);
     int n;
     string input;
-    vector<int> arr;
     while(getline(cin, input)){
         // cout << "DEBUG: " << input << '\n';
         int prev = -1, now;
@@ -22,6 +22,8 @@ int main(){
             break;
         }
         while(getline(cin, input)){
+            vector<int> arr;
+            stack<int> train;
             bool possible = true, isLine = false;
             istringstream ss(input);
             while(ss >> now){
@@ -29,11 +31,23 @@ int main(){
                     isLine = true;
                     break;
                 }
-                if(prev-now > 1) possible = false;
-                prev = now;
+                arr.push_back(now);
             }
             if(isLine) break;
-            cout << (possible ? "Yes\n" : "No\n");
+            int i = 0;
+            // cout << "BEGIN CHECK\n";
+            for(int j = 1; j <= n; j++) {
+                train.push(j);
+                while(!train.empty() && train.top() == arr[i]) {
+                    train.pop();
+                    i++;
+                }
+            }
+            if(train.empty()){
+                cout << "Yes\n";
+            } else {
+                cout << "No\n";
+            }
         }
         cout << '\n';
     }

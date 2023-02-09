@@ -34,28 +34,18 @@ int main(){
             if(isLine) break;
             int i = 0;
             // cout << "BEGIN CHECK\n";
-            for(int j = 1; j <= n; j++){
-                if(j != arr[i]){
-                    if(!train.empty() && train.top() == arr[i]){
-                        // cout << "Get element " << train.top() << '\n';
-                        train.pop();
-                        i++;
-                    } else {
-                        // cout << "Push element " << j << '\n';
-                        train.push(j);
-                    }
-                } else i++;
+            for(int j = 1; j <= n; j++) {
+                train.push(j);
+                while(!train.empty() && train.top() == arr[i]) {
+                    train.pop();
+                    i++;
+                }
             }
-            while(!train.empty()){
-                // cout << "Get element " << train.top() << '\n';
-                int v = train.top();
-                train.pop();
-                if(v == arr[i++]) continue;
+            if(train.empty()){
+                cout << "Yes\n";
+            } else {
                 cout << "No\n";
-                break;
             }
-            if(train.empty()) cout << "Yes\n";
-            // cout << "END CHECK\n";
         }
         cout << '\n';
     }
