@@ -13,6 +13,8 @@ void debug(T const &value, std::string valueName, int index){
     std::cout << "DEBUG VALUE " << valueName << " INDEX " << index << ": " << value << '\n';
 }
 
+typedef unsigned long long ull;
+
 
 int main(){
     using namespace std;
