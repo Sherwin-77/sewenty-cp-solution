@@ -24,7 +24,7 @@ void debug(T const &value, std::string valueName, int index){
 }
 
 template <typename T>
-void print(T const &value, bool newLine=false){
+void print(T const &value, bool newLine=true){
     cout << value;
     if(newLine) cout << '\n';
 }
