@@ -14,6 +14,13 @@
 using namespace std;
 // #define int long long
 
+void fileIO(string fileName, string inExt=".in", string outExt=".out"){
+    string fIn = fileName + inExt;
+    string fOut = fileName + outExt; 
+    freopen(fIn.c_str(), "r", stdin);
+    freopen(fOut.c_str(), "w", stdout);
+}
+
 template <typename T>
 void debug(T const &value, std::string valueName){
     cout << "DEBUG VALUE " << valueName << ": " << value << '\n';
