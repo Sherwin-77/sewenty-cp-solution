@@ -12,36 +12,35 @@
 #include <vector>
 
 using namespace std;
+
 // #define int long long
 
 template <typename T>
 void debug(T const &value, std::string valueName) {
     cout << "DEBUG VALUE " << valueName << ": " << value << '\n';
 }
+
 template <typename T>
 void debug(T const &value, std::string valueName, int index) {
-    cout << "DEBUG VALUE " << valueName << " INDEX " << index << ": " << value << '\n';
+    cout << "DEBUG VALUE " << valueName << " INDEX " << index << ": " << value
+         << '\n';
 }
 
 template <typename T>
 void print(T const &value, bool newLine = true) {
     cout << value;
+
     if (newLine) cout << '\n';
 }
 
 // Alternative
+
 typedef long long ll;
 
-ll compareStr(string &str1, string &str2) {
-    ll ret = 0;
-    for (int i = 0; i < min(str1.length(), str2.length()); i++) ret += str1[i] == str2[i];
-    return ret * ret;
-}
+ll dp[199 + 1][500 + 1][20] = {};
+ll stringCost[200 + 1][20] = {};
+string arr[200+1] = {};
 
-ll dp[199 + 1][500 + 1][20 + 1] = {};
-string resultString[200 + 1][20 + 1] = {};
-
-// FIXME: Still WA
 signed main() {
     ios_base::sync_with_stdio(false);
     cout.tie(NULL);
@@ -58,39 +57,39 @@ signed main() {
     //             }
     //     }
     // }
-    for (int i = 0; i < n; i++) cin >> resultString[i][0];
-    ll cur = 0;
-    for (int i = 0; i < n; i++) {
-        if(i > 0){
-            ll lineCost = compareStr(resultString[i - 1][0], resultString[i][0]);
-            cur += lineCost;
-            dp[i][0][0] = cur;
-        }
-        string curStr = resultString[i][0];
-        for (int rt = 1; rt <= min(k, m); rt++) {
-            rotate(curStr.begin(), curStr.begin() + 1, curStr.end());
-            resultString[i][rt] += curStr;  // Dat array bug is crazy
-            if(i == 0) print(resultString[i][rt]);
+    for (int i = 0; i < n; i++) cin >> arr[i];
+    ll cumCost = 0;
+    for (int i = 1; i < n; i++) {
+        for(int offset = 0; offset < m; offset++){
+            ll ret = 0;
+            for (int j = 0; j < m; j++)
+                ret += arr[i][(j+offset)%m] == arr[i-1][j];
+            ret *= ret;
+            stringCost[i][offset] = ret;
+            if(offset == 0){
+                cumCost += ret;
+                dp[i][0][0] = cumCost;
+            }
         }
     }
-    for(int align = 0; align <= k; align++) dp[0][align][align] = 0;
+
+    for (int align = 0; align <= min(k, m-1); align++) dp[0][align][align] = 0; // No string to align
+    ll best = cumCost;
     for (int line = 1; line < n; line++) {
-        for (int align = 0; align <= k; align++) {
-            for (int rt = 0; rt <= min(align, m); rt++) {           // Rotation of current line
-                for (int cs = 0; cs <= min(align - rt, m); cs++) {  // Compare rotation of prev line
+        for (int align = 1; align <= k; align++) {
+            for (int rt = 0; rt <= min(align, m-1); rt++) {  // Rotation of current line
+                for (int cs = 0; cs <= min(align - rt, m-1); cs++) {  // Compare rotation of prev line
                     if (align - rt - cs < 0) terminate();
                     if (dp[line - 1][align - rt][cs] == -1) continue;
-                    ll cur = compareStr(resultString[line - 1][cs], resultString[line][rt]);
-                    dp[line][align][rt] = max(dp[line][align][rt], dp[line - 1][align - rt][cs] + cur);
-                    // cout << "Line: " << line << " | Align: " << align << " | Rotate: " << rt << " | Compare : " << cs << '\n';
+                    dp[line][align][rt] = max(dp[line][align][rt], dp[line - 1][align - rt][cs] + stringCost[line][(rt-cs+m)%m]); 
+                    // cout << "Line: " << line+1 << " | Align: " << align << " | Rotate: " << rt << " | Compare : " << cs << '\n';
                     // print(dp[line][align][rt]);
+                }
+                if(line == n-1){
+                    best = max(best, dp[line][align][rt]);
                 }
             }
         }
     }
-    ll best = 0;
-    for (int i = 0; i <= min(k, m); i++) {
-        for (auto x : dp[n - 1][i]) best = max(best, x);
-    }
-    print(best);
+    cout << best;
 }

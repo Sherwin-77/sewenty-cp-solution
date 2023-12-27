@@ -45,4 +45,33 @@ signed main(){
     ios_base::sync_with_stdio(false);
     cout.tie(NULL);
     cin.tie(NULL);
+    fileIO("speeding");
+    ll n, m;
+    ll a, b;
+    cin >> n >> m;
+    vector<pair<ll, ll>> road(n);
+    vector<pair<ll, ll>> journey(m);
+    for(ll i = 0; i < n; i++){
+        cin >> a >> b;
+        road[i] = {a, b};
+    }
+    for(ll i = 0; i < m; i++){
+        cin >> a >> b;
+        journey[i] = {a, b};
+    }
+    ll res = 0;
+    ll cur = 0;
+    for(auto x: journey){
+        ll rem = x.first;
+        while(rem && cur < n){
+            res = max(res, x.second-road[cur].second);
+            if(rem > road[cur].first) rem -= road[cur++].first;
+            else {
+                road[cur].first -= rem;
+                if(road[cur].first == 0) cur++;
+                break;
+            }
+        }
+    }
+    cout << res;
 }

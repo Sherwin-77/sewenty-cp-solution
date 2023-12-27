@@ -40,9 +40,21 @@ void print(T const &value, bool newLine=true){
 // Alternative
 typedef long long ll;
 
-
+int res[26] = {};
 signed main(){
     ios_base::sync_with_stdio(false);
     cout.tie(NULL);
     cin.tie(NULL);
+    fileIO("blocks");
+    int n;
+    string a, b;
+    cin >> n;
+    vector<vector<pair<int, int>>> checked(n, vector<pair<int, int>>(26, {0, 0}));
+    for(int i = 0; i < n; i++){
+        cin >> a >> b;
+        for(char c: a) checked[i][c-'a'].first++;
+        for(char c: b) checked[i][c-'a'].second++;
+        for(int j = 0; j < 26; j++) res[j] += max(checked[i][j].first, checked[i][j].second);
+    }
+    for(auto x: res) cout << x << '\n';
 }
