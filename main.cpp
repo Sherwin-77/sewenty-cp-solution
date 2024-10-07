@@ -39,7 +39,9 @@ void print(T const &value, bool newLine=true){
 
 // Alternative
 typedef long long ll;
+typedef unsigned long long ull;
 
+const ll DEFAULTMOD = 1000000007;
 
 signed main(){
     ios_base::sync_with_stdio(false);
